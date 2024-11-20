@@ -1,4 +1,4 @@
-# 4Bit-Up-Down-Asynchronous-Reset-Counter-Synthesis
+# Exp-4 4Bit-Up-Down-Asynchronous-Reset-Counter-Synthesis
 
 ## Aim:
 
@@ -63,15 +63,70 @@ used.
 
 • Genus Script file with .tcl file Extension commands are executed one by one to synthesize the netlist.
 
-#### Synthesis RTL Schematic :
+### Verilog code for 4-Bit Up-Down Counter:
+~~~
+`timescale 1ns / 1 ns
+module counter(clk,m,rst,count);
+input clk,m,rst;
+output reg [3:0] count;
+always@(posedge clk or negedge rst)
+begin
+if (!rst)
+count=0;
+else if(m)
+count=count+1;
+else
+count=count-1;
+end
+endmodule
+~~~
+### run code:
+~~~
+read_libs /cadence/install/FOUNDRY-01/digital/90nm/dig/lib/slow.lib
+read_hdl counter.v
+elaborate
+read_sdc input_constraints.sdc 
+syn_generic
+report_area
+syn_map
+report_area
+syn_opt
+report_area 
+report_area > counter_area.txt
+report_power > counter_power.txt
+report_timing > counter_timing.txt
+report_area > counter_cell.txt
+report_gates > counter_gates.txt
+write_hdl > counter_netlist.v
+write_sdc > output_constraints.sdc 
+gui_show
+~~~
+### sdc code:
+~~~
+create_clock -name clk -period 2 -waveform {0 1} [get_ports "clk"]
+set_clock_transition -rise 0.1 [get_clocks "clk"]
+set_clock_transition -fall 0.1 [get_clocks "clk"]
+set_clock_uncertainty 0.01 [get_ports "clk"]
+set_input_delay -max 0.8 [get_ports "rst"] -clock [get_clocks "clk"]
+set_output_delay -max 0.8 [get_ports "count"] -clock [get_clocks "clk"]
+~~~
+### Synthesis RTL Schematic :
 
-#### Area report:
+![image](https://github.com/user-attachments/assets/329dc3a3-a8fc-45ef-95e1-2e21b9f191c6)
 
-#### Power Report:
+### Area report:
 
-#### Timing Report: 
+![image](https://github.com/user-attachments/assets/ff6a89ca-4d8b-451c-b74e-4effe9a29086)
 
-#### Result: 
+### Power Report:
+
+![image](https://github.com/user-attachments/assets/dba83e65-56e6-4969-9f93-e9b5e0882b28)
+
+### Timing Report: 
+
+![image](https://github.com/user-attachments/assets/92e6984d-db15-4e6b-9512-fabc8360147a)
+
+## Result: 
 
 The generic netlist has been created, and area, power, and timing reports have been tabulated and generated using Genus.
 
