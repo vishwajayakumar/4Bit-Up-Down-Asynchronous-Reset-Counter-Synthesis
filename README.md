@@ -25,19 +25,14 @@ Synthesis requires three files as follows,
 •	In your terminal type “gedit input_constraints.sdc” to create an SDC File if you do not have one.
 
 •	The SDC File must contain the following commands;
-
+~~~
 create_clock -name clk -period 2 -waveform {0 1} [get_ports "clk"]
-
 set_clock_transition -rise 0.1 [get_clocks "clk"]
-
 set_clock_transition -fall 0.1 [get_clocks "clk"]
-
 set_clock_uncertainty 0.01 [get_ports "clk"]
-
 set_input_delay -max 0.8 [get_ports "rst"] -clock [get_clocks "clk"]
-
 set_output_delay -max 0.8 [get_ports "count"] -clock [get_clocks "clk"]
-
+~~~
 i→ Creates a Clock named “clk” with Time Period 2ns and On Time from t=0 to t=1.
 
 ii, iii → Sets Clock Rise and Fall time to 100ps.
@@ -101,15 +96,7 @@ write_hdl > counter_netlist.v
 write_sdc > output_constraints.sdc 
 gui_show
 ~~~
-### sdc code:
-~~~
-create_clock -name clk -period 2 -waveform {0 1} [get_ports "clk"]
-set_clock_transition -rise 0.1 [get_clocks "clk"]
-set_clock_transition -fall 0.1 [get_clocks "clk"]
-set_clock_uncertainty 0.01 [get_ports "clk"]
-set_input_delay -max 0.8 [get_ports "rst"] -clock [get_clocks "clk"]
-set_output_delay -max 0.8 [get_ports "count"] -clock [get_clocks "clk"]
-~~~
+
 ### Synthesis RTL Schematic :
 
 ![image](https://github.com/user-attachments/assets/329dc3a3-a8fc-45ef-95e1-2e21b9f191c6)
